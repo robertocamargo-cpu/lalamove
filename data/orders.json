@@ -1,0 +1,1724 @@
+[
+  {
+    "orderId": "3615050452632302203",
+    "quotationId": "quote_3615050452632302203",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-26T20:10:27.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-51.00",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-51.00"
+    },
+    "distanceKm": "16.70 km",
+    "driver": {
+      "id": "csv_0",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaPro"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3615050452632302203",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615050452632302203&stop=0"
+      },
+      {
+        "stopId": "stop_1_3615050452632302203",
+        "address": "Rua Deputado Laércio Corte 1501, Vila Andrade, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615050452632302203&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3615007433031901665",
+    "quotationId": "quote_3615007433031901665",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-26T18:35:05.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-49.62",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-49.62"
+    },
+    "distanceKm": "36.10 km",
+    "driver": {
+      "id": "csv_1",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaPro"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3615007433031901665",
+        "address": "R. Cel. Pereira Neto, 264 , Calmon Viana, Poá , SP, 08560,050, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615007433031901665&stop=0"
+      },
+      {
+        "stopId": "stop_1_3615007433031901665",
+        "address": "Rua Glicério 551, Liberdade, São Paulo-São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615007433031901665&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3615796262865170534",
+    "quotationId": "quote_3615796262865170534",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-27T20:36:00.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-75.19",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-75.19"
+    },
+    "distanceKm": "15.00 km",
+    "driver": {
+      "id": "csv_2",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3615796262865170534",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615796262865170534&stop=0"
+      },
+      {
+        "stopId": "stop_1_3615796262865170534",
+        "address": "Rua Doutor Sílvio Dante Bertacchi 263, Vila Sônia, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3615796262865170534&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3616387287384023764",
+    "quotationId": "quote_3616387287384023764",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-28T16:09:01.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-22.84",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-22.84"
+    },
+    "distanceKm": "5.30 km",
+    "driver": {
+      "id": "csv_3",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3616387287384023764",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3616387287384023764&stop=0"
+      },
+      {
+        "stopId": "stop_1_3616387287384023764",
+        "address": "Rua Oscar Freire, 329 , 7 andar , Cerqueira César, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3616387287384023764&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3616386975671742528",
+    "quotationId": "quote_3616386975671742528",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-28T16:10:16.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-32.06",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-32.06"
+    },
+    "distanceKm": "6.50 km",
+    "driver": {
+      "id": "csv_4",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3616386975671742528",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3616386975671742528&stop=0"
+      },
+      {
+        "stopId": "stop_1_3616386975671742528",
+        "address": "Rua Oscar Freire, 836 , Cerqueira César, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3616386975671742528&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3617211943041069392",
+    "quotationId": "quote_3617211943041069392",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-29T19:29:30.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-65.17",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-65.17"
+    },
+    "distanceKm": "25.20 km",
+    "driver": {
+      "id": "csv_5",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3617211943041069392",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617211943041069392&stop=0"
+      },
+      {
+        "stopId": "stop_1_3617211943041069392",
+        "address": "Rua Francisco Barriga De Souza 322, Campo Limpo, São Paulo-São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617211943041069392&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3617747010159080442",
+    "quotationId": "quote_3617747010159080442",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-30T13:17:00.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-89.31",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-89.31"
+    },
+    "distanceKm": "8.50 km",
+    "driver": {
+      "id": "csv_6",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3617747010159080442",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617747010159080442&stop=0"
+      },
+      {
+        "stopId": "stop_1_3617747010159080442",
+        "address": "Rua Pedroso Alvarenga 706, Itaim Bibi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617747010159080442&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3617752114845147542",
+    "quotationId": "quote_3617752114845147542",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-10-30T13:19:33.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-20.02",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-20.02"
+    },
+    "distanceKm": "8.90 km",
+    "driver": {
+      "id": "csv_7",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3617752114845147542",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617752114845147542&stop=0"
+      },
+      {
+        "stopId": "stop_1_3617752114845147542",
+        "address": "Rua Azevedo Soares 1140, Tatuapé, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3617752114845147542&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3620733837983838649",
+    "quotationId": "quote_3620733837983838649",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-03T16:02:42.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-20.85",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-20.85"
+    },
+    "distanceKm": "5.30 km",
+    "driver": {
+      "id": "csv_8",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3620733837983838649",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3620733837983838649&stop=0"
+      },
+      {
+        "stopId": "stop_1_3620733837983838649",
+        "address": "Rua Júlio De Castilhos 47, Belém, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3620733837983838649&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3621342230855512934",
+    "quotationId": "quote_3621342230855512934",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-04T12:27:06.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-60.64",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-60.64"
+    },
+    "distanceKm": "19.80 km",
+    "driver": {
+      "id": "csv_9",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3621342230855512934",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621342230855512934&stop=0"
+      },
+      {
+        "stopId": "stop_1_3621342230855512934",
+        "address": "R. Dona Júlia, 66 , Vila Bastos, Santo André , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621342230855512934&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3621430791436989487",
+    "quotationId": "quote_3621430791436989487",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-04T15:09:17.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-18.10",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-18.10"
+    },
+    "distanceKm": "4.60 km",
+    "driver": {
+      "id": "csv_10",
+      "name": "FERNANDO",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3621430791436989487",
+        "address": "Rua Cubatão, 601 , Vila Mariana, São Paulo , SP, 04013,043, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621430791436989487&stop=0"
+      },
+      {
+        "stopId": "stop_1_3621430791436989487",
+        "address": "Rua Glicério 551, Liberdade, São Paulo-São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621430791436989487&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3621359469193294689",
+    "quotationId": "quote_3621359469193294689",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-04T12:57:28.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-47.62",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-47.62"
+    },
+    "distanceKm": "23.20 km",
+    "driver": {
+      "id": "csv_11",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3621359469193294689",
+        "address": "Rua Francisco Barriga De Souza 322, Campo Limpo, São Paulo-São Paulo, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621359469193294689&stop=0"
+      },
+      {
+        "stopId": "stop_1_3621359469193294689",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621359469193294689&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3621472961019732309",
+    "quotationId": "quote_3621472961019732309",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-04T16:38:40.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-39.81",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-39.81"
+    },
+    "distanceKm": "5.10 km",
+    "driver": {
+      "id": "csv_12",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3621472961019732309",
+        "address": "R. Orozimbo Maia, 100 , Alto da Mooca, São Paulo , SP, 03178,110, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621472961019732309&stop=0"
+      },
+      {
+        "stopId": "stop_1_3621472961019732309",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3621472961019732309&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622186260707369677",
+    "quotationId": "quote_3622186260707369677",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-05T16:17:42.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-33.20",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-33.20"
+    },
+    "distanceKm": "9.90 km",
+    "driver": {
+      "id": "csv_13",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622186260707369677",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622186260707369677&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622186260707369677",
+        "address": "Rua Dos Patriotas 733, Ipiranga, São Paulo-São Paulo, Brasil > Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622186260707369677&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622312416504931295",
+    "quotationId": "quote_3622312416504931295",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-05T20:41:52.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-75.38",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-75.38"
+    },
+    "distanceKm": "20.70 km",
+    "driver": {
+      "id": "csv_14",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622312416504931295",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622312416504931295&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622312416504931295",
+        "address": "Praça Nicolau Aranha Pachêco, 64 , Jardim Ipanema, São Paulo , SP, 04784,280, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622312416504931295&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622323743742981071",
+    "quotationId": "quote_3622323743742981071",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-05T20:50:50.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-31.60",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-31.60"
+    },
+    "distanceKm": "19.50 km",
+    "driver": {
+      "id": "csv_15",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622323743742981071",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622323743742981071&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622323743742981071",
+        "address": "Rua Jorge Felipe Haddad, 112 , Macedo, Guarulhos , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622323743742981071&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622770577108066933",
+    "quotationId": "quote_3622770577108066933",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-06T11:51:28.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-61.23",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-61.23"
+    },
+    "distanceKm": "17.30 km",
+    "driver": {
+      "id": "csv_16",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622770577108066933",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622770577108066933&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622770577108066933",
+        "address": "Rua Deputado Laércio Corte 1501, Vila Andrade, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622770577108066933&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622770569172443961",
+    "quotationId": "quote_3622770569172443961",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-06T11:52:38.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-52.61",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-52.61"
+    },
+    "distanceKm": "6.00 km",
+    "driver": {
+      "id": "csv_17",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622770569172443961",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622770569172443961&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622770569172443961",
+        "address": "Avenida Henry Ford, 1495 , Mooca, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622770569172443961&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622836067750863164",
+    "quotationId": "quote_3622836067750863164",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-06T13:43:33.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-27.03",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-27.03"
+    },
+    "distanceKm": "5.10 km",
+    "driver": {
+      "id": "csv_18",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622836067750863164",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622836067750863164&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622836067750863164",
+        "address": "Rua Engenheiro Edgar Egídio de Souza, 221 , Santa Cecilia, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622836067750863164&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622842063567155501",
+    "quotationId": "quote_3622842063567155501",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-06T13:47:35.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-35.06",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-35.06"
+    },
+    "distanceKm": "8.80 km",
+    "driver": {
+      "id": "csv_19",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622842063567155501",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622842063567155501&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622842063567155501",
+        "address": "Avenida Aratãs, 984 , 1010 , Indianópolis, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622842063567155501&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3622860165277245881",
+    "quotationId": "quote_3622860165277245881",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-06T14:31:42.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-27.14",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-27.14"
+    },
+    "distanceKm": "4.50 km",
+    "driver": {
+      "id": "csv_20",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3622860165277245881",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622860165277245881&stop=0"
+      },
+      {
+        "stopId": "stop_1_3622860165277245881",
+        "address": "Rua Joinville, 515 , Vila Mariana, São Paulo , SP, 04008,001, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3622860165277245881&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3624955265255957426",
+    "quotationId": "quote_3624955265255957426",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-09T12:16:06.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-18.06",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-18.06"
+    },
+    "distanceKm": "5.70 km",
+    "driver": {
+      "id": "csv_21",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3624955265255957426",
+        "address": "Rua Júlio De Castilhos 47, Belém, São Paulo,São Paulo, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3624955265255957426&stop=0"
+      },
+      {
+        "stopId": "stop_1_3624955265255957426",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3624955265255957426&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3625028118311559308",
+    "quotationId": "quote_3625028118311559308",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-09T14:11:31.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-21.83",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-21.83"
+    },
+    "distanceKm": "5.80 km",
+    "driver": {
+      "id": "csv_22",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3625028118311559308",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625028118311559308&stop=0"
+      },
+      {
+        "stopId": "stop_1_3625028118311559308",
+        "address": "R. Orozimbo Maia, 100 , Alto da Mooca, São Paulo , SP, 03178,110, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625028118311559308&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3625121585758954407",
+    "quotationId": "quote_3625121585758954407",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-09T17:28:50.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-23.18",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-23.18"
+    },
+    "distanceKm": "6.50 km",
+    "driver": {
+      "id": "csv_23",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3625121585758954407",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625121585758954407&stop=0"
+      },
+      {
+        "stopId": "stop_1_3625121585758954407",
+        "address": "Rua Manuel Guedes 545, Itaim Bibi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625121585758954407&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3625686434826117740",
+    "quotationId": "quote_3625686434826117740",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-10T12:18:25.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-86.49",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-86.49"
+    },
+    "distanceKm": "12.30 km",
+    "driver": {
+      "id": "csv_24",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3625686434826117740",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625686434826117740&stop=0"
+      },
+      {
+        "stopId": "stop_1_3625686434826117740",
+        "address": "Av. Magalhães de Castro, 12000 , Pinheiros, São Paulo , SP, 05502,001, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625686434826117740&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3625793739307573970",
+    "quotationId": "quote_3625793739307573970",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-10T15:37:33.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-24.79",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-24.79"
+    },
+    "distanceKm": "8.80 km",
+    "driver": {
+      "id": "csv_25",
+      "name": "FERNANDO",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3625793739307573970",
+        "address": "Rua Major Otaviano 263, Belém, São Paulo,São Paulo, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625793739307573970&stop=0"
+      },
+      {
+        "stopId": "stop_1_3625793739307573970",
+        "address": "Rua Cubatão, 601 - Vila Mariana, São Paulo - SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625793739307573970&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3625818245929591245",
+    "quotationId": "quote_3625818245929591245",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-10T16:27:07.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-22.19",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-22.19"
+    },
+    "distanceKm": "12.10 km",
+    "driver": {
+      "id": "csv_26",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3625818245929591245",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625818245929591245&stop=0"
+      },
+      {
+        "stopId": "stop_1_3625818245929591245",
+        "address": "Rua Margarida Galvão 161, Morumbi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3625818245929591245&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3626537120585445675",
+    "quotationId": "quote_3626537120585445675",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-11T16:20:09.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-33.30",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-33.30"
+    },
+    "distanceKm": "15.90 km",
+    "driver": {
+      "id": "csv_27",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3626537120585445675",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3626537120585445675&stop=0"
+      },
+      {
+        "stopId": "stop_1_3626537120585445675",
+        "address": "Avenida Paulista 1439, Jardim Paulista, São Paulo-São Paulo, Brasil > R. Fernandes Moreira, 1371 , Chácara Santo Antônio (Zona Sul), São Paulo , SP, 04716,003, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3626537120585445675&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3627257102822760725",
+    "quotationId": "quote_3627257102822760725",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-12T16:05:44.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-26.73",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-26.73"
+    },
+    "distanceKm": "8.90 km",
+    "driver": {
+      "id": "csv_28",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3627257102822760725",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627257102822760725&stop=0"
+      },
+      {
+        "stopId": "stop_1_3627257102822760725",
+        "address": "Rua Hungria 1100, Pinheiros, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627257102822760725&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3627330955280348036",
+    "quotationId": "quote_3627330955280348036",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-12T18:29:05.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-23.97",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-23.97"
+    },
+    "distanceKm": "6.90 km",
+    "driver": {
+      "id": "csv_29",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3627330955280348036",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627330955280348036&stop=0"
+      },
+      {
+        "stopId": "stop_1_3627330955280348036",
+        "address": "Rua João Cachoeira 545, Itaim Bibi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627330955280348036&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3627392938444813027",
+    "quotationId": "quote_3627392938444813027",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-12T20:50:21.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-123.03",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-123.03"
+    },
+    "distanceKm": "38.00 km",
+    "driver": {
+      "id": "csv_30",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3627392938444813027",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627392938444813027&stop=0"
+      },
+      {
+        "stopId": "stop_1_3627392938444813027",
+        "address": "Av. Vítor Gabriel, 163 , Jardim Bom Refugio, São Paulo , SP, 05788,000, Brasil > Rua Padre José Garzotti 342, Cidade Dutra, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627392938444813027&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3627930429887312535",
+    "quotationId": "quote_3627930429887312535",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-13T14:18:48.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-70.00",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-70.00"
+    },
+    "distanceKm": "2.90 km",
+    "driver": {
+      "id": "csv_31",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3627930429887312535",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627930429887312535&stop=0"
+      },
+      {
+        "stopId": "stop_1_3627930429887312535",
+        "address": "Rua Cubatão, 601 , Vila Mariana, São Paulo , SP, 04013,043, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627930429887312535&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3627991203624214795",
+    "quotationId": "quote_3627991203624214795",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-13T16:17:44.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-30.34",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-30.34"
+    },
+    "distanceKm": "7.40 km",
+    "driver": {
+      "id": "csv_32",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3627991203624214795",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627991203624214795&stop=0"
+      },
+      {
+        "stopId": "stop_1_3627991203624214795",
+        "address": "R. André Fernandes, 166 , Itaim Bibi, São Paulo , SP, 04536,020, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3627991203624214795&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3630794788992938344",
+    "quotationId": "quote_3630794788992938344",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-17T13:13:13.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-22.75",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-22.75"
+    },
+    "distanceKm": "9.40 km",
+    "driver": {
+      "id": "csv_33",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3630794788992938344",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3630794788992938344&stop=0"
+      },
+      {
+        "stopId": "stop_1_3630794788992938344",
+        "address": "Rua Costa Carvalho 159, Pinheiros, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3630794788992938344&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3630899077610434856",
+    "quotationId": "quote_3630899077610434856",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-17T16:44:31.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-50.62",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-50.62"
+    },
+    "distanceKm": "2.60 km",
+    "driver": {
+      "id": "csv_34",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3630899077610434856",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3630899077610434856&stop=0"
+      },
+      {
+        "stopId": "stop_1_3630899077610434856",
+        "address": "Rua Chuí, 42 , Vila Mariana, São Paulo , SP, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3630899077610434856&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3631607081217520094",
+    "quotationId": "quote_3631607081217520094",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-18T16:13:13.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-45.23",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-45.23"
+    },
+    "distanceKm": "12.20 km",
+    "driver": {
+      "id": "csv_35",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3631607081217520094",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3631607081217520094&stop=0"
+      },
+      {
+        "stopId": "stop_1_3631607081217520094",
+        "address": "Av. Mário Haberfeld, 555 , Parque Novo Mundo, São Paulo , SP, 02145,000, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3631607081217520094&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3632339375691620464",
+    "quotationId": "quote_3632339375691620464",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-19T16:22:45.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-55.76",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-55.76"
+    },
+    "distanceKm": "27.60 km",
+    "driver": {
+      "id": "csv_36",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3632339375691620464",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632339375691620464&stop=0"
+      },
+      {
+        "stopId": "stop_1_3632339375691620464",
+        "address": "Rua Hilário Ascabusi 228, Cidade Dutra, São Paulo-São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632339375691620464&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3632370703417959003",
+    "quotationId": "quote_3632370703417959003",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-19T17:25:13.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-49.53",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-49.53"
+    },
+    "distanceKm": "13.20 km",
+    "driver": {
+      "id": "csv_37",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3632370703417959003",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632370703417959003&stop=0"
+      },
+      {
+        "stopId": "stop_1_3632370703417959003",
+        "address": "Rua Girassol 617, Pinheiros, São Paulo-São Paulo, Brasil > Av. Brig. Faria Lima, 4100 , Itaim Bibi, São Paulo , SP, 04538,132, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632370703417959003&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3632433305712030210",
+    "quotationId": "quote_3632433305712030210",
+    "serviceType": "LUV",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-19T19:30:18.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-126.04",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-126.04"
+    },
+    "distanceKm": "33.80 km",
+    "driver": {
+      "id": "csv_38",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "UV and Pick-Up"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3632433305712030210",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632433305712030210&stop=0"
+      },
+      {
+        "stopId": "stop_1_3632433305712030210",
+        "address": "Rua Clemente Cunha Ferreira 539, Poá,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3632433305712030210&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3635140137169674455",
+    "quotationId": "quote_3635140137169674455",
+    "serviceType": "CAR",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-23T13:03:42.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-64.38",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-64.38"
+    },
+    "distanceKm": "10.90 km",
+    "driver": {
+      "id": "csv_39",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "Car Hatchback"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3635140137169674455",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3635140137169674455&stop=0"
+      },
+      {
+        "stopId": "stop_1_3635140137169674455",
+        "address": "Rua Domingos Calheiros 107, Tucuruvi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3635140137169674455&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  },
+  {
+    "orderId": "3635140114738537261",
+    "quotationId": "quote_3635140114738537261",
+    "serviceType": "LALAPRO",
+    "status": "COMPLETED",
+    "createdAt": "2026-11-23T13:06:29.000Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "-31.94",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "-31.94"
+    },
+    "distanceKm": "7.40 km",
+    "driver": {
+      "id": "csv_40",
+      "name": "vinicius",
+      "phone": "",
+      "plate": "",
+      "vehicleModel": "LalaGo"
+    },
+    "stops": [
+      {
+        "stopId": "stop_0_3635140114738537261",
+        "address": "Rua Glicério, 551 - Liberdade, São Paulo - SP, Brasil",
+        "clientName": "Expedição Matriz",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3635140114738537261&stop=0"
+      },
+      {
+        "stopId": "stop_1_3635140114738537261",
+        "address": "Rua Lopes Neto 89, Itaim Bibi, São Paulo,São Paulo, Brasil",
+        "clientName": "Cliente",
+        "clientPhone": "",
+        "status": "DELIVERED",
+        "shareLink": "https://lalamove.com/share/track?id=3635140114738537261&stop=1"
+      }
+    ],
+    "isRouteOptimized": true,
+    "remarks": "Importado dos Registros Lalamove"
+  }
+]

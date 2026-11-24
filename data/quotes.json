@@ -1,0 +1,44 @@
+[
+  {
+    "quotationId": "3635940447903506538",
+    "serviceType": "LALAPRO",
+    "deliveryTier": "REGULAR",
+    "scheduleAt": "2026-11-24T15:25:26.00Z",
+    "expiresAt": "2026-11-24T15:30:26.00Z",
+    "priceBreakdown": {
+      "currency": "BRL",
+      "base": "20.08",
+      "extraMileage": "0.00",
+      "surcharge": "0.00",
+      "total": "20.08",
+      "priorityPrice": "29.59",
+      "regularPrice": "20.08",
+      "pooledPrice": "16.28"
+    },
+    "distance": {
+      "value": "3300",
+      "text": "3.3 km"
+    },
+    "stops": [
+      {
+        "stopId": "3635940447903506539",
+        "coordinates": {
+          "lat": "-23.5567800",
+          "lng": "-46.6288900"
+        },
+        "address": "Rua do Glicério, 557 — Liberdade, São Paulo - SP"
+      },
+      {
+        "stopId": "3635940447903506540",
+        "coordinates": {
+          "lat": "-23.5648870",
+          "lng": "-46.6519180"
+        },
+        "address": "Av. Paulista, 1000 - Bela Vista, São Paulo - SP"
+      }
+    ],
+    "isRouteOptimized": true,
+    "isLiveApi": true,
+    "createdAt": "2026-11-24T15:25:11.088Z"
+  }
+]
