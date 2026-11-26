@@ -1,7 +1,7 @@
 'use strict';
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header } from '@/components/Header';
 import { StopForm } from '@/components/StopForm';
 import { CubageCalculator } from '@/components/CubageCalculator';
@@ -20,13 +20,15 @@ import {
 } from '@/types/lalamove';
 import { Sparkles, Calculator, AlertCircle } from 'lucide-react';
 import { CargoVolume } from '@/lib/cubage-multi';
+import { formatDeliveryRemarks } from '@/lib/stop-address';
 
 const INITIAL_STOPS: StopAddress[] = [
   {
     id: 'origin_0',
     isOrigin: true,
-    name: 'Expedição Matriz (Guardanapos & Descartáveis)',
-    phone: '+55 11 3333-4444',
+    isWarehouse: true,
+    name: 'Nevine Liberdade (Vinicius)',
+    phone: '+55 11 94708-4941',
     address: 'Rua do Glicério, 557 — Liberdade, São Paulo - SP',
     street: 'Rua do Glicério',
     number: '557',
@@ -73,11 +75,15 @@ export default function Home() {
   // Cotação
   const [quotation, setQuotation] = useState<QuotationResponse | null>(null);
   const [loadingQuotation, setLoadingQuotation] = useState<boolean>(false);
+  const [resolvingCep, setResolvingCep] = useState(false);
   const [confirmingOrder, setConfirmingOrder] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Pedidos e Modais
   const [orders, setOrders] = useState<Order[]>([]);
+  const [quotedStops, setQuotedStops] = useState<StopAddress[]>([]);
+  const quoteVersion = useRef(0);
+  const submittingOrder = useRef(false);
   const [isRouteComparisonOpen, setIsRouteComparisonOpen] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
@@ -88,18 +94,42 @@ export default function Home() {
       if (res.ok) {
         const data = await res.json();
         setOrders(data.orders || []);
+      } else {
+        throw new Error('Não foi possível atualizar as entregas.');
       }
     } catch (e) {
-      console.error('Falha ao buscar pedidos', e);
+      setErrorMessage('Não foi possível atualizar as entregas. Tente novamente.');
     }
   };
 
   useEffect(() => {
     fetchOrders();
+    const interval = setInterval(fetchOrders, 30000);
+    return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    quoteVersion.current++;
+    setQuotation(null);
+    setLoadingQuotation(false);
+  }, [stops, selectedService, specialRequests, scheduleAt, isRouteOptimized, quantityBoxes, weightPerBoxKg, lengthCm, widthCm, heightCm, additionalVolumes]);
+
   // Dispara cotação Lalamove
-  const handleRequestQuotation = async () => {
+  const requestQuotation = async (tier: DeliveryTier = selectedTier) => {
+    if (resolvingCep) return;
+    const incompleteCep = stops.findIndex(stop => stop.cep && stop.cep.replace(/\D/g, '').length !== 8);
+    if (incompleteCep >= 0) {
+      setErrorMessage(`Informe os 8 dígitos do CEP da ${incompleteCep === 0 ? 'origem' : `parada ${incompleteCep}`}.`);
+      return;
+    }
+    const missingNumber = stops.findIndex(stop => stop.street && !stop.number?.trim());
+    if (missingNumber >= 0) {
+      setErrorMessage(`Informe o número do imóvel da ${missingNumber === 0 ? 'origem' : `parada ${missingNumber}`} antes de cotar.`);
+      return;
+    }
+    const version = ++quoteVersion.current;
+    const stopSnapshot = stops.map(s => ({ ...s, coordinates: { ...s.coordinates } }));
+    setQuotation(null);
     setLoadingQuotation(true);
     setErrorMessage(null);
 
@@ -107,24 +137,18 @@ export default function Home() {
       const payload = {
         data: {
           serviceType: selectedService,
-          deliveryTier: selectedTier,
+          deliveryTier: tier,
           specialRequests,
           language: 'pt_BR',
           isRouteOptimized,
           stops: stops.map((s) => ({
             coordinates: s.coordinates,
             address: s.address,
-            remarks: s.remarks,
+            street: s.street, number: s.number, complement: s.complement,
+            neighborhood: s.neighborhood, city: s.city, state: s.state, cep: s.cep,
+            remarks: formatDeliveryRemarks(s),
           })),
-          item: {
-            quantity: String(quantityBoxes + additionalVolumes.reduce((sum, volume) => sum + Math.max(1, volume.quantityBoxes || 1), 0)),
-            weight: (weightPerBoxKg * quantityBoxes + additionalVolumes.reduce((sum, volume) => sum + (volume.weightPerBoxKg * volume.quantityBoxes), 0)) > 10 ? 'MORE_THAN_10KG' : 'LESS_THAN_10KG',
-            categories: ['OFFICE_SUPPLIES'],
-            handlingInstructions: specialRequests.includes('KEEP_DRY')
-              ? ['KEEP_DRY']
-              : ['FRAGILE'],
-          },
-          scheduleAt: scheduleAt || undefined,
+          scheduleAt: scheduleAt ? new Date(scheduleAt).toISOString() : undefined,
         },
       };
 
@@ -140,47 +164,39 @@ export default function Home() {
       }
 
       const quoteData: QuotationResponse = await res.json();
+      if (version !== quoteVersion.current) return;
+      setQuotedStops(quoteData.stops.map(s => stopSnapshot[s.originalIndex!]));
       setQuotation(quoteData);
     } catch (err: any) {
-      setErrorMessage(err.message || 'Erro ao processar cotação');
+      if (version === quoteVersion.current) setErrorMessage(err.message || 'Erro ao processar cotação');
     } finally {
-      setLoadingQuotation(false);
+      if (version === quoteVersion.current) setLoadingQuotation(false);
     }
   };
+  const handleRequestQuotation = () => requestQuotation(selectedTier);
 
   // Contrata a corrida
   const handleConfirmOrder = async () => {
-    if (!quotation) return;
+    if (!quotation || submittingOrder.current) return;
+    submittingOrder.current = true;
 
     setConfirmingOrder(true);
     setErrorMessage(null);
 
     try {
-      const origin = stops[0];
-      const recipients = stops.slice(1).map((s) => ({
-        name: s.name || 'Cliente Destinatário',
-        phone: s.phone || '+5511999990000',
-        remarks: s.remarks,
+      const origin = quotedStops[0];
+      const recipients = quotedStops.slice(1).map((s, i) => ({
+        stopId: quotation.stops[i + 1].stopId,
+        name: s.name, phone: s.phone, remarks: formatDeliveryRemarks(s),
       }));
-
-      const finalPrice =
-        selectedTier === 'PRIORITY'
-          ? quotation.priceBreakdown.priorityPrice || quotation.priceBreakdown.total
-          : selectedTier === 'POOLED'
-          ? quotation.priceBreakdown.pooledPrice || quotation.priceBreakdown.total
-          : quotation.priceBreakdown.regularPrice || quotation.priceBreakdown.total;
 
       const res = await fetch('/api/lalamove/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           quotationId: quotation.quotationId,
-          deliveryTier: selectedTier,
-          priceBreakdown: {
-            ...quotation.priceBreakdown,
-            total: finalPrice,
-          },
           sender: {
+            stopId: quotation.stops[0].stopId,
             name: origin.name,
             phone: origin.phone,
           },
@@ -200,12 +216,13 @@ export default function Home() {
     } catch (err: any) {
       setErrorMessage(err.message || 'Erro ao contratar corrida');
     } finally {
+      submittingOrder.current = false;
       setConfirmingOrder(false);
     }
   };
 
   const activeOrdersCount = orders.filter(
-    (o) => o.status !== 'COMPLETED' && o.status !== 'CANCELED'
+    (o) => o.isLiveApi && !['COMPLETED', 'CANCELED', 'REJECTED', 'EXPIRED'].includes(o.status)
   ).length;
 
   return (
@@ -242,6 +259,7 @@ export default function Home() {
                 setStops={setStops}
                 isRouteOptimized={isRouteOptimized}
                 setIsRouteOptimized={setIsRouteOptimized}
+                onCepLookupStateChange={setResolvingCep}
               />
 
               <CubageCalculator
@@ -267,14 +285,14 @@ export default function Home() {
 
               <button
                 type="button"
-                disabled={loadingQuotation}
+                disabled={loadingQuotation || resolvingCep}
                 onClick={handleRequestQuotation}
                 className="w-full py-4 px-6 rounded-xl font-extrabold text-base bg-gradient-to-r from-[#D95314] via-[#F26522] to-[#FF7A00] hover:opacity-95 text-white shadow-xl shadow-orange-500/20 active:scale-[0.99] transition-all flex items-center justify-center space-x-2"
               >
-                {loadingQuotation ? (
+                {loadingQuotation || resolvingCep ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Consultando Tarifas Lalamove Oficial...</span>
+                    <span>{resolvingCep ? 'Consultando CEP...' : 'Consultando Tarifas Lalamove Oficial...'}</span>
                   </>
                 ) : (
                   <>
@@ -291,7 +309,7 @@ export default function Home() {
                   quotation={quotation}
                   loading={loadingQuotation}
                   selectedTier={selectedTier}
-                  setSelectedTier={setSelectedTier}
+                  setSelectedTier={(tier) => { setSelectedTier(tier); requestQuotation(tier); }}
                   onRefreshQuotation={handleRequestQuotation}
                   onConfirmOrder={handleConfirmOrder}
                   onCompareRoutes={() => setIsRouteComparisonOpen(true)}

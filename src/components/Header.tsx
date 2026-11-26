@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 'use client';
 
 import React from 'react';
@@ -97,8 +97,8 @@ export function Header({
               className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gray-900/80 hover:bg-gray-800 border border-gray-800 text-xs transition-colors cursor-pointer"
               title="Clique para configurar suas credenciais oficiais da Lalamove"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-gray-300 font-medium">Tarifário Lalamove SP</span>
+              <span className="w-2 h-2 rounded-full bg-gray-400" />
+              <span className="text-gray-300 font-medium">Configurar API Lalamove</span>
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 ml-0.5" />
             </button>
 

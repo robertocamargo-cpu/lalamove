@@ -46,7 +46,7 @@ export function OrderDetailsModal({
 
   const isCompleted = order.status === 'COMPLETED';
   const isCanceled = order.status === 'CANCELED';
-  const isOngoing = !isCompleted && !isCanceled;
+  const isOngoing = order.isLiveApi && !['COMPLETED', 'CANCELED', 'REJECTED', 'EXPIRED'].includes(order.status);
 
   const handleCopyId = () => {
     navigator.clipboard.writeText(order.orderId);
@@ -124,7 +124,7 @@ export function OrderDetailsModal({
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
                 <span>•</span>
-                <span>{new Date(order.createdAt).toLocaleString('pt-BR')}</span>
+                <span>{order.createdAt ? new Date(order.createdAt).toLocaleString('pt-BR') : 'Data não informada'}</span>
               </div>
             </div>
           </div>
@@ -165,7 +165,7 @@ export function OrderDetailsModal({
               <span className="text-xl font-extrabold text-[#F26522] mt-0.5 block">
                 R$ {order.priceBreakdown.total}
               </span>
-              <span className="text-[10px] text-emerald-400 font-medium">Preço Oficial Lalamove</span>
+              <span className="text-[10px] text-emerald-400 font-medium">{order.source === 'csv' ? 'Valor do CSV importado' : 'Preço confirmado pela API'}</span>
             </div>
           </div>
 
@@ -174,11 +174,11 @@ export function OrderDetailsModal({
             <div className="bg-[#12141a] border border-gray-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center space-x-3.5">
                 <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-800 border border-orange-500/40 shrink-0">
-                  <img
-                    src={order.driver.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}
+                  {order.driver.photoUrl ? <img
+                    src={order.driver.photoUrl}
                     alt={order.driver.name}
                     className="w-full h-full object-cover"
-                  />
+                  /> : <User className="w-full h-full text-gray-500 p-2" />}
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
@@ -273,7 +273,7 @@ export function OrderDetailsModal({
 
                       {/* Botões de Ação por Parada */}
                       <div className="flex items-center space-x-2 shrink-0 self-end sm:self-start">
-                        {!isOrigin && (
+                        {!isOrigin && stop.shareLink && stop.clientPhone && (
                           <button
                             type="button"
                             onClick={() => handleSendWhatsApp(stop)}
@@ -285,7 +285,7 @@ export function OrderDetailsModal({
                           </button>
                         )}
 
-                        <a
+                        {stop.shareLink && <a
                           href={stop.shareLink}
                           target="_blank"
                           rel="noreferrer"
@@ -293,7 +293,7 @@ export function OrderDetailsModal({
                         >
                           <Share2 className="w-3.5 h-3.5 text-orange-400" />
                           <span>Rastreio ao Vivo</span>
-                        </a>
+                        </a>}
                       </div>
                     </div>
 
@@ -313,11 +313,11 @@ export function OrderDetailsModal({
                           <div>
                             <span className="text-[11px] text-gray-400 block mb-1">Registro Fotográfico:</span>
                             <div className="rounded-lg overflow-hidden border border-gray-700 bg-black aspect-video relative">
-                              <img
-                                src={pod.photoUrl || 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600'}
+                              {pod.photoUrl ? <img
+                                src={pod.photoUrl}
                                 alt="Foto do pacote entregue"
                                 className="w-full h-full object-cover"
-                              />
+                              /> : <span className="text-xs text-gray-400 p-3 block">Foto não disponibilizada pela Lalamove.</span>}
                             </div>
                           </div>
 
@@ -326,7 +326,7 @@ export function OrderDetailsModal({
                             <div className="text-xs space-y-1 bg-[#12141a] p-2.5 rounded-lg border border-gray-800">
                               <div className="text-gray-400">
                                 Recebido por:{' '}
-                                <strong className="text-white">{pod.receiverName || 'Recebedor Autorizado'}</strong>
+                                <strong className="text-white">{pod.receiverName || 'Não informado pela Lalamove'}</strong>
                               </div>
                               {pod.receiverDoc && (
                                 <div className="text-gray-400">
@@ -341,7 +341,7 @@ export function OrderDetailsModal({
                                 {pod.signatureUrl ? (
                                   <img src={pod.signatureUrl} alt="Assinatura" className="max-h-12" />
                                 ) : (
-                                  <span className="text-xs text-gray-400 font-mono">[Assinatura Biométrica Validada]</span>
+                                  <span className="text-xs text-gray-400 font-mono">Assinatura não disponibilizada pela Lalamove</span>
                                 )}
                               </div>
                             </div>

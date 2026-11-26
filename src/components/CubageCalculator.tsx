@@ -1,7 +1,7 @@
-﻿'use strict';
+'use strict';
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Boxes,
   Weight,
@@ -61,6 +61,19 @@ export function CubageCalculator({
   additionalVolumes,
   setAdditionalVolumes,
 }: CubageCalculatorProps) {
+  const [serviceRequests, setServiceRequests] = useState<Record<string, string[]>>({});
+  const [capabilityError, setCapabilityError] = useState('');
+  useEffect(() => {
+    fetch('/api/lalamove/cities').then(async res => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Não foi possível consultar os serviços disponíveis.');
+      const city = data.data?.find((city: any) => city.locode === 'BR SAO');
+      if (!city) throw new Error('Serviços de São Paulo não encontrados.');
+      setServiceRequests(Object.fromEntries(city.services.map((service: any) => [service.key, (service.specialRequests || []).map((s: any) => s.name)])));
+    }).catch(error => setCapabilityError(error.message));
+  }, []);
+  const supported = serviceRequests[selectedService] || [];
+  const loadingRequest = supported.find(s => s.startsWith('LOADING_1DRIVER1HELPER_MAX060MIN')) || supported.find(s => s === 'LOADING_1DRIVER_MAX030MIN');
   const allVolumes: CargoVolume[] = [{ id: 'volume_primary', quantityBoxes, weightPerBoxKg, lengthCm, widthCm, heightCm }, ...additionalVolumes];
   const cubage = calculateMultiCubage(allVolumes);
 
@@ -77,9 +90,9 @@ export function CubageCalculator({
     'LALAGO',
     'HATCHBACK',
     'CAR',
-    'LUV',
+    'UV_FIORINO',
     'VAN',
-    'TRUCK',
+    'TRUCK330',
   ];
 
   return (
@@ -94,7 +107,7 @@ export function CubageCalculator({
               Carga & Calculadora de Cubagem (Guardanapos de Papel)
             </h3>
             <p className="text-xs text-gray-400">
-              Categoria Lalamove: OFFICE_SUPPLIES / Manter Seco (KEEP_DRY)
+              Guardanapos e descartáveis — proteger contra umidade
             </p>
           </div>
         </div>
@@ -243,7 +256,7 @@ export function CubageCalculator({
               <button
                 key={serviceKey}
                 type="button"
-                onClick={() => setSelectedService(serviceKey)}
+                onClick={() => { setSelectedService(serviceKey); setSpecialRequests([]); }}
                 className={`p-3 rounded-xl border text-left transition-all relative ${
                   isSelected
                     ? 'border-[#F26522] bg-[#F26522]/10 ring-1 ring-[#F26522]'
@@ -257,10 +270,10 @@ export function CubageCalculator({
                 )}
                 <div className="text-xs font-bold text-white">{spec.categoryName}</div>
                 <div className="text-[11px] text-gray-400 mt-0.5 leading-tight">
-                  {spec.dimensionsText} â€¢ {spec.maxWeightKg} kg
+                  {spec.dimensionsText} • {spec.maxWeightKg} kg
                 </div>
                 <div className="text-[11px] font-semibold text-orange-400 mt-2">
-                  Base R$ {spec.baseRateBrl.toFixed(2)}
+                  Consultar valor na cotação
                 </div>
               </button>
             );
@@ -268,27 +281,30 @@ export function CubageCalculator({
         </div>
       </div>
 
+      {capabilityError && <p role="alert" className="text-xs text-amber-300">{capabilityError} Os adicionais ficam indisponíveis até a consulta ser concluída.</p>}
       {/* Serviços Adicionais & Agendamento */}
       <div className="pt-2 border-t border-gray-800 flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            onClick={() => toggleSpecialRequest('HELP_LOADING_UNLOADING')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
-              specialRequests.includes('HELP_LOADING_UNLOADING')
+            disabled={!loadingRequest}
+            onClick={() => loadingRequest && toggleSpecialRequest(loadingRequest as SpecialRequest)}
+            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+              loadingRequest && specialRequests.includes(loadingRequest as SpecialRequest)
                 ? 'border-orange-500 bg-orange-500/20 text-orange-300'
                 : 'border-gray-800 bg-[#0F1117] text-gray-400 hover:text-white'
             }`}
           >
             <UserCheck className="w-3.5 h-3.5" />
-            <span>Ajudante de Carga (+ R$ 45)</span>
+            <span>{loadingRequest?.includes('HELPER') ? 'Motorista + ajudante (até 1 hora)' : loadingRequest ? 'Ajuda do motorista (até 30 min)' : 'Carga e descarga indisponível neste modal'}</span>
           </button>
 
           <button
             type="button"
-            onClick={() => toggleSpecialRequest('RETURN_TRIP')}
-            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
-              specialRequests.includes('RETURN_TRIP')
+            disabled={!supported.includes('RETURN')}
+            onClick={() => toggleSpecialRequest('RETURN')}
+            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+              specialRequests.includes('RETURN')
                 ? 'border-orange-500 bg-orange-500/20 text-orange-300'
                 : 'border-gray-800 bg-[#0F1117] text-gray-400 hover:text-white'
             }`}

@@ -34,31 +34,21 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
   const [selectedFullOrder, setSelectedFullOrder] = useState<Order | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  const activeOrders = orders.filter((o) => o.status !== 'CANCELED');
-
-  const handleAdvanceStatus = async (orderId: string) => {
-    setActionLoading(`advance_${orderId}`);
-    try {
-      await fetch(`/api/lalamove/orders/${orderId}/advance-status`, {
-        method: 'POST',
-      });
-      onRefreshOrders();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setActionLoading(null);
-    }
-  };
+  const [actionError, setActionError] = useState<string | null>(null);
+  const activeOrders = orders.filter(o => o.isLiveApi && !['COMPLETED', 'CANCELED', 'REJECTED', 'EXPIRED'].includes(o.status));
 
   const handleChangeDriver = async (orderId: string) => {
+    if (!confirm('Solicitar à Lalamove a troca do motorista atual por atraso?')) return;
+    setActionError(null);
     setActionLoading(`driver_${orderId}`);
     try {
-      await fetch(`/api/lalamove/orders/${orderId}/change-driver`, {
+      const res = await fetch(`/api/lalamove/orders/${orderId}/change-driver`, {
         method: 'POST',
       });
+      if (!res.ok) { const data = await res.json(); throw new Error(data.error || 'Ação recusada pela Lalamove.'); }
       onRefreshOrders();
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      setActionError(e.message);
     } finally {
       setActionLoading(null);
     }
@@ -66,14 +56,16 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
 
   const handleCancelOrder = async (orderId: string) => {
     if (!confirm('Deseja realmente cancelar esta corrida Lalamove?')) return;
+    setActionError(null);
     setActionLoading(`cancel_${orderId}`);
     try {
-      await fetch(`/api/lalamove/orders/${orderId}/cancel`, {
+      const res = await fetch(`/api/lalamove/orders/${orderId}/cancel`, {
         method: 'POST',
       });
+      if (!res.ok) { const data = await res.json(); throw new Error(data.error || 'Ação recusada pela Lalamove.'); }
       onRefreshOrders();
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      setActionError(e.message);
     } finally {
       setActionLoading(null);
     }
@@ -136,6 +128,11 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between text-xs text-gray-400">
+        <span>Atualização automática a cada 30 segundos</span>
+        <button onClick={onRefreshOrders} className="text-orange-400 underline">Atualizar agora</button>
+      </div>
+      {actionError && <p role="alert" className="text-sm text-rose-300">{actionError}</p>}
       {activeOrders.map((order) => (
         <div
           key={order.orderId}
@@ -170,19 +167,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
                 <span>Ver Detalhes do Envio</span>
               </button>
 
-              {order.status !== 'COMPLETED' && (
-                <button
-                  type="button"
-                  disabled={!!actionLoading}
-                  onClick={() => handleAdvanceStatus(order.orderId)}
-                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors flex items-center space-x-1 shadow"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                  <span>Avançar Etapa (Simulação)</span>
-                </button>
-              )}
-
-              {order.status !== 'COMPLETED' && (
+              {order.driverId && ['ON_GOING'].includes(order.status) && (
                 <button
                   type="button"
                   disabled={!!actionLoading}
@@ -208,6 +193,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
             </div>
           </div>
 
+          {order.syncWarning && <p role="alert" className="px-5 py-3 text-xs text-amber-300">{order.syncWarning}{order.lastSyncedAt ? ` Última consulta: ${new Date(order.lastSyncedAt).toLocaleString('pt-BR')}` : ''}</p>}
           <div className="p-5 grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Coluna 1 & 2: Timeline das Paradas e Links de Rastreamento */}
             <div className="lg:col-span-2 space-y-4">
@@ -287,7 +273,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
 
                         {/* Botões de Rastreio / POD / WhatsApp */}
                         <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1.5 shrink-0">
-                          {!isOrigin && (
+                          {!isOrigin && stop.shareLink && stop.clientPhone && (
                             <button
                               type="button"
                               onClick={() => handleShareWhatsApp(stop, order.orderId)}
@@ -310,7 +296,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
                               <FileCheck className="w-3.5 h-3.5" />
                               <span>Ver POD</span>
                             </button>
-                          ) : (
+                          ) : stop.shareLink ? (
                             <a
                               href={stop.shareLink}
                               target="_blank"
@@ -320,7 +306,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
                               <Share2 className="w-3.5 h-3.5" />
                               <span>Link Rastreio</span>
                             </a>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                     </div>
@@ -338,18 +324,18 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
               {order.driver ? (
                 <div className="bg-[#12141a] border border-gray-800 rounded-xl p-4 space-y-4">
                   <div className="flex items-center space-x-3">
-                    <img
+                    {order.driver.photoUrl ? <img
                       src={order.driver.photoUrl}
                       alt={order.driver.name}
                       className="w-12 h-12 rounded-full object-cover border border-orange-500/40"
-                    />
+                    /> : <User className="w-12 h-12 text-gray-500" />}
                     <div>
                       <h5 className="text-sm font-bold text-white">
                         {order.driver.name}
                       </h5>
                       <span className="text-[11px] text-emerald-400 flex items-center gap-1">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                        Online via Lalamove Driver App
+                        Dados recebidos da Lalamove
                       </span>
                     </div>
                   </div>
@@ -358,13 +344,13 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
                     <div className="flex justify-between">
                       <span>Veículo:</span>
                       <span className="text-gray-200 font-medium">
-                        {order.driver.vehicleModel}
+                        {order.driver.vehicleModel || 'Não informado'}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Placa:</span>
                       <span className="text-white font-mono font-bold bg-gray-800 px-2 py-0.5 rounded border border-gray-700">
-                        {order.driver.plate}
+                        {order.driver.plate || 'Não informada'}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -382,7 +368,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
               ) : (
                 <div className="bg-[#12141a] border border-gray-800 rounded-xl p-6 text-center text-xs text-gray-400">
                   <Clock className="w-6 h-6 text-orange-400 mx-auto mb-2 animate-spin" />
-                  Buscando motorista mais próximo da Rua do Glicério...
+                  {order.driverId ? 'Motorista atribuído. Dados ainda indisponíveis pela API.' : 'Aguardando atribuição de motorista pela Lalamove.'}
                 </div>
               )}
             </div>
@@ -402,7 +388,7 @@ export function ActiveOrdersView({ orders, onRefreshOrders }: ActiveOrdersViewPr
       <OrderDetailsModal
         isOpen={!!selectedFullOrder}
         onClose={() => setSelectedFullOrder(null)}
-        order={selectedFullOrder}
+        order={orders.find(o => o.orderId === selectedFullOrder?.orderId) || selectedFullOrder}
         onRefreshOrders={onRefreshOrders}
       />
     </div>

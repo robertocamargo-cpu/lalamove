@@ -1,14 +1,4 @@
-﻿import crypto from 'crypto';
-import {
-  LalamoveServiceType,
-  DeliveryTier,
-  QuotationRequest,
-  QuotationResponse,
-  Order,
-  OrderStatus,
-} from '@/types/lalamove';
-import { LALAMOVE_VEHICLES } from './cubage';
-
+import crypto from 'crypto';
 export interface LalamoveConfig {
   apiKey: string;
   apiSecret: string;
@@ -18,12 +8,16 @@ export interface LalamoveConfig {
 }
 
 export function getLalamoveConfig(): LalamoveConfig {
+  const env = process.env.LALAMOVE_ENV || 'production';
+  if (env !== 'production' && env !== 'sandbox') throw new Error('Ambiente Lalamove inválido.');
+  const mockFallback = false;
+
   return {
     apiKey: process.env.LALAMOVE_API_KEY || '',
     apiSecret: process.env.LALAMOVE_API_SECRET || '',
-    env: (process.env.LALAMOVE_ENV as 'sandbox' | 'production') || 'sandbox',
+    env,
     market: process.env.LALAMOVE_MARKET || 'BR',
-    mockFallback: process.env.LALAMOVE_MOCK_FALLBACK !== 'false',
+    mockFallback,
   };
 }
 
@@ -76,8 +70,15 @@ export async function makeLalamoveRequest(
     config.apiKey.includes('test_key') ||
     config.apiKey.includes('sua_api_key');
 
-  if (isMockKey && config.mockFallback) {
-    return null;
+  if (isMockKey) {
+    throw new Error(
+      'Credenciais da Lalamove não configuradas. Defina LALAMOVE_API_KEY e LALAMOVE_API_SECRET válidas para o ambiente de produção.'
+    );
+  }
+
+  const prefix = config.env === 'production' ? 'prod' : 'test';
+  if (!config.apiKey.startsWith(`pk_${prefix}_`) || !config.apiSecret.startsWith(`sk_${prefix}_`)) {
+    throw new Error(`As credenciais cadastradas não correspondem ao ambiente ${config.env}.`);
   }
 
   const baseUrl = getBaseUrl(config.env);
@@ -89,174 +90,27 @@ export async function makeLalamoveRequest(
     method,
     headers,
     body: payload ? body : undefined,
+    cache: 'no-store',
+    signal: AbortSignal.timeout(20000),
   });
 
   const data = await res.json().catch(() => null);
 
   if (!res.ok) {
-    throw new Error(
-      `Lalamove API Error [${res.status}]: ${
-        data?.message || data?.errors?.[0]?.message || res.statusText
-      }`
-    );
+    throw new LalamoveApiError(res.status, data?.message || data?.errors?.[0]?.message || data?.errors?.[0]?.id || res.statusText);
   }
 
+  if (res.status !== 204 && !data?.data) throw new Error('Resposta inválida da Lalamove.');
   return data;
 }
 
-/**
- * ObtÃ©m a distÃ¢ncia viÃ¡ria real (traÃ§ado de trÃ¢nsito em SÃ£o Paulo) via OSRM.
- */
-export async function getStreetDrivingDistanceKm(
-  lon1: number,
-  lat1: number,
-  lon2: number,
-  lat2: number
-): Promise<number> {
-  try {
-    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
-    const res = await fetch(osrmUrl, { next: { revalidate: 86400 } });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.routes && data.routes[0]?.distance) {
-        return Number((data.routes[0].distance / 1000).toFixed(1));
-      }
-    }
-  } catch (err) {
-    // Fallback
+export class LalamoveApiError extends Error {
+  constructor(public status: number, message: string) {
+    super(`Lalamove [${status}]: ${message}`);
   }
-
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return Number((R * c * 1.55).toFixed(1));
 }
 
-/**
- * SimulaÃ§Ã£o de CotaÃ§Ã£o calibrada com a curva real da Lalamove SÃ£o Paulo
- */
-export async function simulateQuotationAsync(req: QuotationRequest): Promise<QuotationResponse> {
-  const stops = req.stops;
-  const vehicle = LALAMOVE_VEHICLES[req.serviceType] || LALAMOVE_VEHICLES.LALAPRO;
-  const selectedTier = req.deliveryTier || 'REGULAR';
-
-  let totalKmManual = 0;
-  for (let i = 0; i < stops.length - 1; i++) {
-    const p1 = stops[i].coordinates;
-    const p2 = stops[i + 1].coordinates;
-    const km = await getStreetDrivingDistanceKm(
-      parseFloat(p1.lng || '-46.62889'),
-      parseFloat(p1.lat || '-23.55678'),
-      parseFloat(p2.lng || '-46.65598'),
-      parseFloat(p2.lat || '-23.56168')
-    );
-    totalKmManual += km;
-  }
-  totalKmManual = Math.max(1.0, Number(totalKmManual.toFixed(1)));
-
-  let totalKm = totalKmManual;
-  let kmSaved = 0;
-  let priceSaved = 0;
-
-  let orderedStops = stops.map((s, idx) => ({
-    coordinates: s.coordinates,
-    address: s.address,
-    originalIndex: idx,
-    optimizedIndex: idx,
-  }));
-
-  if (req.isRouteOptimized && stops.length > 2) {
-    const origin = orderedStops[0];
-    const destinations = orderedStops.slice(1);
-    
-    destinations.sort((a, b) => {
-      const latOrig = parseFloat(origin.coordinates.lat);
-      const lngOrig = parseFloat(origin.coordinates.lng);
-      const distA = Math.hypot(parseFloat(a.coordinates.lat) - latOrig, parseFloat(a.coordinates.lng) - lngOrig);
-      const distB = Math.hypot(parseFloat(b.coordinates.lat) - latOrig, parseFloat(b.coordinates.lng) - lngOrig);
-      return distA - distB;
-    });
-
-    orderedStops = [origin, ...destinations].map((s, idx) => ({
-      ...s,
-      optimizedIndex: idx,
-    }));
-
-    kmSaved = Number((totalKmManual * 0.14).toFixed(1));
-    totalKm = Number((totalKmManual - kmSaved).toFixed(1));
-    priceSaved = Number((kmSaved * vehicle.pricePerKmBrl).toFixed(2));
-  }
-
-  // Tabela oficial Lalamove SP:
-  // Base cobre o 1Âº km (11.50).
-  // A taxa por km adicional Ã© regressiva: R$ 2.20/km em rotas curtas e R$ 1.94/km em rotas mais longas
-  const basePrice = vehicle.baseRateBrl;
-  const extraKm = Math.max(0, totalKm - 1.0);
-  
-  // Taxa por km decrescente com a distÃ¢ncia (curva oficial Lalamove)
-  const dynamicPerKmRate = Math.max(1.94, Number((2.26 - totalKm * 0.021).toFixed(3)));
-  const extraMileagePrice = Number((extraKm * dynamicPerKmRate).toFixed(2));
-  
-  const additionalStopsCount = Math.max(0, stops.length - 2);
-  let surcharge = additionalStopsCount * vehicle.stopFeeBrl;
-
-  if (req.specialRequests?.includes('HELP_LOADING_UNLOADING')) {
-    surcharge += 45.0;
-  }
-  if (req.specialRequests?.includes('RETURN_TRIP')) {
-    surcharge += basePrice * 0.7;
-  }
-
-  const regularTotal = Number((basePrice + extraMileagePrice + surcharge).toFixed(2));
-  
-  // Ratios oficiais do site da Lalamove:
-  // Prioridade: ~1.4763x
-  // Agrupado: ~0.8096x
-  const priorityTotal = Number((regularTotal * 1.4763).toFixed(2));
-  const pooledTotal = Number((regularTotal * 0.8096).toFixed(2));
-
-  let finalPrice = regularTotal;
-  if (selectedTier === 'PRIORITY') finalPrice = priorityTotal;
-  if (selectedTier === 'POOLED') finalPrice = pooledTotal;
-
-  const now = new Date();
-  const expiresAt = new Date(now.getTime() + 5 * 60 * 1000).toISOString();
-
-  return {
-    quotationId: `quote_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-    serviceType: req.serviceType,
-    deliveryTier: selectedTier,
-    scheduleAt: req.scheduleAt,
-    expiresAt,
-    priceBreakdown: {
-      currency: 'BRL',
-      base: basePrice.toFixed(2),
-      extraMileage: extraMileagePrice.toFixed(2),
-      surcharge: surcharge.toFixed(2),
-      total: finalPrice.toFixed(2),
-      priorityPrice: priorityTotal.toFixed(2),
-      regularPrice: regularTotal.toFixed(2),
-      pooledPrice: pooledTotal.toFixed(2),
-    },
-    distance: {
-      value: (totalKm * 1000).toString(),
-      text: `${totalKm} km`,
-    },
-    stops: orderedStops,
-    isRouteOptimized: req.isRouteOptimized,
-    savingsVsManual: req.isRouteOptimized && stops.length > 2 ? {
-      kmSaved,
-      priceSavedBrl: priceSaved,
-    } : undefined,
-    isLiveApi: false,
-    createdAt: now.toISOString(),
-  };
+export function lalamoveErrorStatus(error: unknown): number {
+  return error instanceof LalamoveApiError && [400, 402, 403, 404, 409, 422, 429].includes(error.status)
+    ? error.status : 502;
 }
-
