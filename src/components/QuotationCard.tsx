@@ -43,16 +43,15 @@ export function QuotationCard({
   useEffect(() => {
     if (!quotation?.expiresAt) return;
 
-    const interval = setInterval(() => {
+    const updateTimer = () => {
       const now = new Date().getTime();
       const expiry = new Date(quotation.expiresAt).getTime();
       const diffSecs = Math.max(0, Math.floor((expiry - now) / 1000));
       setSecondsLeft(diffSecs);
 
-      if (diffSecs <= 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
+    };
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
 
     return () => clearInterval(interval);
   }, [quotation]);
@@ -92,16 +91,7 @@ export function QuotationCard({
   const isExpired = secondsLeft <= 0;
   const vehicleSpec = LALAMOVE_VEHICLES[quotation.serviceType as LalamoveServiceType] || LALAMOVE_VEHICLES.LALAPRO;
 
-  const priorityPrice = quotation.priceBreakdown.priorityPrice || (parseFloat(quotation.priceBreakdown.total) * 1.42).toFixed(2);
-  const regularPrice = quotation.priceBreakdown.regularPrice || quotation.priceBreakdown.total;
-  const pooledPrice = quotation.priceBreakdown.pooledPrice || (parseFloat(quotation.priceBreakdown.total) * 0.83).toFixed(2);
-
-  const currentDisplayPrice =
-    selectedTier === 'PRIORITY'
-      ? priorityPrice
-      : selectedTier === 'POOLED'
-      ? pooledPrice
-      : regularPrice;
+  const currentDisplayPrice = quotation.priceBreakdown.total;
 
   return (
     <div className="bg-[#171922] border border-gray-800 rounded-xl overflow-hidden shadow-xl">
@@ -152,11 +142,11 @@ export function QuotationCard({
               </span>
               {quotation.isLiveApi ? (
                 <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">
-                  API Oficial Lalamove
+                  {quotation.apiEnv === 'production' ? 'Produção • API Oficial' : 'Sandbox • API de Testes'}
                 </span>
               ) : (
                 <span className="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-semibold">
-                  Tarifário Lalamove SP
+                  Cotação não verificada
                 </span>
               )}
             </div>
@@ -178,7 +168,7 @@ export function QuotationCard({
           <label className="text-xs font-bold text-gray-300 mb-2 flex items-center justify-between">
             <span>Modalidade de Atendimento Lalamove:</span>
             <span className="text-[11px] font-normal text-gray-500">
-              Idêntico ao site oficial
+              Trocar modalidade solicita uma nova cotação
             </span>
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -202,7 +192,7 @@ export function QuotationCard({
                 Alocação rápida para entregas expressas
               </p>
               <div className="text-xs font-bold text-amber-400 mt-2 font-mono">
-                R$ {priorityPrice}
+                {quotation.deliveryTier === 'PRIORITY' ? `R$ ${currentDisplayPrice}` : 'Consultar preço'}
               </div>
             </button>
 
@@ -224,7 +214,7 @@ export function QuotationCard({
                 Entrega direta padrão ponto-a-ponto
               </p>
               <div className="text-xs font-bold text-[#F26522] mt-2 font-mono">
-                R$ {regularPrice}
+                {quotation.deliveryTier === 'REGULAR' ? `R$ ${currentDisplayPrice}` : 'Consultar preço'}
               </div>
             </button>
 
@@ -248,7 +238,7 @@ export function QuotationCard({
                 Espaço dividido e entrega sem urgência
               </p>
               <div className="text-xs font-bold text-emerald-400 mt-2 font-mono">
-                R$ {pooledPrice}
+                {quotation.deliveryTier === 'POOLED' ? `R$ ${currentDisplayPrice}` : 'Consultar preço'}
               </div>
             </button>
           </div>
@@ -287,11 +277,11 @@ export function QuotationCard({
           </div>
           <div className="flex justify-between text-gray-400">
             <span>Quilometragem Adicional:</span>
-            <span className="text-gray-200 font-mono">R$ {quotation.priceBreakdown.extraMileage}</span>
+            <span className="text-gray-200 font-mono">R$ {quotation.priceBreakdown.extraMileage || '—'}</span>
           </div>
           <div className="flex justify-between text-gray-400">
             <span>Serviços Adicionais / Paradas Extras:</span>
-            <span className="text-gray-200 font-mono">R$ {quotation.priceBreakdown.surcharge}</span>
+            <span className="text-gray-200 font-mono">R$ {quotation.priceBreakdown.surcharge || '—'}</span>
           </div>
           <div className="pt-2 border-t border-gray-800 flex justify-between font-bold text-white text-sm">
             <span>Total da Corrida ({selectedTier === 'PRIORITY' ? 'Prioridade' : selectedTier === 'POOLED' ? 'Agrupado' : 'Regular'}):</span>
@@ -303,7 +293,7 @@ export function QuotationCard({
         <div className="pt-2">
           <button
             type="button"
-            disabled={isExpired || confirmingOrder}
+            disabled={isExpired || confirmingOrder || !quotation.isLiveApi || selectedTier !== quotation.deliveryTier}
             onClick={onConfirmOrder}
             className={`w-full py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center space-x-2 transition-all ${
               isExpired
@@ -327,7 +317,7 @@ export function QuotationCard({
             )}
           </button>
           <p className="text-[11px] text-gray-500 text-center mt-2">
-            Disparo imediato para a rede de motoristas parceiros Lalamove com links de rastreio individuais por cliente.
+            {quotation.apiEnv === 'production' ? 'Ao contratar, uma corrida real será solicitada à Lalamove pelo valor cotado.' : 'Esta cotação pertence ao ambiente de testes da Lalamove.'}
           </p>
         </div>
       </div>

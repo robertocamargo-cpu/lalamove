@@ -65,7 +65,7 @@ export function PodModal({ isOpen, onClose, stop, orderId }: PodModalProps) {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Recebedor:</span>
-              <span className="text-white font-semibold">{pod.receiverName}</span>
+              <span className="text-white font-semibold">{pod.receiverName || 'Não informado pela Lalamove'}</span>
             </div>
             {pod.receiverDoc && (
               <div className="flex justify-between">
@@ -85,13 +85,13 @@ export function PodModal({ isOpen, onClose, stop, orderId }: PodModalProps) {
               Registro Fotográfico da Mercadoria Entregue:
             </label>
             <div className="rounded-xl overflow-hidden border border-gray-700 bg-black aspect-video relative">
-              <img
-                src={pod.photoUrl || 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600'}
+              {pod.photoUrl ? <img
+                src={pod.photoUrl}
                 alt="Foto do pacote entregue"
                 className="w-full h-full object-cover"
-              />
+              /> : <span className="text-xs text-gray-400 p-3 block">Foto não disponibilizada pela Lalamove.</span>}
               <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-[10px] text-white px-2 py-0.5 rounded font-mono">
-                Geotag: SP - {pod.deliveredAt}
+                {pod.deliveredAt}
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export function PodModal({ isOpen, onClose, stop, orderId }: PodModalProps) {
                 />
               ) : (
                 <span className="text-xs text-gray-400 font-mono">
-                  [Assinatura Biométrica Digital Registrada]
+                  Assinatura não disponibilizada pela Lalamove
                 </span>
               )}
             </div>

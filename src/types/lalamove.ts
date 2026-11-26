@@ -5,18 +5,19 @@ export type LalamoveServiceType =
   | 'LALAGO'     // Moto sem baú (documentos e pequenas encomendas)
   | 'HATCHBACK'  // Carro Hatch
   | 'CAR'        // Carro Sedan / Passeio
-  | 'LUV'        // Utilitário e Pick-Up (Fiorino, Strada, etc.)
+  | 'UV_FIORINO'        // Utilitário e Pick-Up (Fiorino, Strada, etc.)
   | 'VAN'        // Van de Carga (Master, Sprinter)
-  | 'TRUCK';     // Caminhão Baú
+  | 'TRUCK330';     // Caminhão Baú
 
 export type DeliveryTier = 'PRIORITY' | 'REGULAR' | 'POOLED'; // Prioridade, Regular, Agrupado
 
 export type SpecialRequest =
-  | 'HELP_LOADING_UNLOADING'
-  | 'KEEP_DRY'
-  | 'FRAGILE'
-  | 'RETURN_TRIP'
-  | 'THERMAL_BAG';
+  | 'LOADING_1DRIVER_MAX030MIN'
+  | 'LOADING_1DRIVER1HELPER_MAX060MIN'
+  | 'LOADING_1DRIVER1HELPER_MAX120MIN'
+  | 'LOADING_1DRIVER1HELPER_MAX180MIN'
+  | 'RETURN'
+  | 'THERMAL_BAG_1';
 
 export interface Coordinates {
   lat: string;
@@ -26,6 +27,8 @@ export interface Coordinates {
 export interface StopAddress {
   id: string;
   isOrigin?: boolean;
+  /** Marca o endereço fixo da matriz (CEP 01514-001, nº 557), que pode ocupar a origem ou o destino. */
+  isWarehouse?: boolean;
   name: string;
   phone: string;
   address: string;
@@ -60,6 +63,13 @@ export interface QuotationRequest {
   stops: Array<{
     coordinates: Coordinates;
     address: string;
+    street?: string;
+    number?: string;
+    complement?: string;
+    neighborhood?: string;
+    city?: string;
+    state?: string;
+    cep?: string;
     remarks?: string;
   }>;
   item?: {
@@ -109,6 +119,7 @@ export interface QuotationResponse {
     priceSavedBrl: number;
   };
   isLiveApi?: boolean;
+  apiEnv?: 'production' | 'sandbox';
   createdAt: string;
 }
 
@@ -118,7 +129,9 @@ export type OrderStatus =
   | 'PICKED_UP'
   | 'COMPLETED'
   | 'CANCELED'
-  | 'REJECTED';
+  | 'REJECTED'
+  | 'EXPIRED'
+  | 'UNKNOWN';
 
 export interface DriverInfo {
   id: string;
@@ -135,8 +148,10 @@ export interface StopDeliveryStatus {
   address: string;
   clientName: string;
   clientPhone: string;
-  status: 'PENDING' | 'IN_TRANSIT' | 'ARRIVED' | 'DELIVERED' | 'FAILED';
-  shareLink: string;
+  status: 'PENDING' | 'IN_TRANSIT' | 'ARRIVED' | 'DELIVERED' | 'FAILED' | 'UNKNOWN';
+  shareLink?: string;
+  coordinates?: Coordinates;
+  remarks?: string;
   arrivedAt?: string;
   completedAt?: string;
   pod?: {
@@ -144,11 +159,17 @@ export interface StopDeliveryStatus {
     photoUrl?: string;
     receiverName?: string;
     receiverDoc?: string;
-    deliveredAt: string;
+    deliveredAt?: string;
   };
 }
 
 export interface Order {
+  isLiveApi?: boolean;
+  apiEnv?: 'production' | 'sandbox';
+  source?: 'api' | 'csv';
+  lastSyncedAt?: string;
+  syncWarning?: string;
+  driverId?: string;
   orderId: string;
   quotationId: string;
   serviceType: LalamoveServiceType;

@@ -1,43 +1,16 @@
 import { NextResponse } from 'next/server';
-import { makeLalamoveRequest } from '@/lib/lalamove-client';
-import { getOrderById, saveOrder } from '@/lib/storage';
-
-export async function POST(
-  request: Request,
-  { params }: { params: { orderId: string } }
-) {
-  const { orderId } = params;
-  const order = getOrderById(orderId);
-
+import { makeLalamoveRequest, lalamoveErrorStatus } from '@/lib/lalamove-client';
+import { assertLiveOrder, mapLiveOrder } from '@/lib/lalamove-orders';
+import { saveOrder } from '@/lib/storage';
+export async function POST(request: Request, { params }: { params: { orderId: string } }) {
   try {
-    const body = await request.json();
-    const fee = body.fee || '10.00';
-
-    // Chama endpoint oficial da Lalamove se em produção
-    try {
-      await makeLalamoveRequest('POST', `/v3/orders/${orderId}/priority-fee`, {
-        data: {
-          priorityFee: String(fee),
-        },
-      });
-    } catch (apiErr: any) {
-      console.warn('Priority fee live API notice:', apiErr.message);
+    const order = assertLiveOrder(params.orderId);
+    const { fee } = await request.json();
+    if (!/^\d+(\.\d{1,2})?$/.test(String(fee)) || Number(fee) <= 0) {
+      return NextResponse.json({ error: 'Informe uma taxa positiva, com até duas casas decimais.' }, { status: 400 });
     }
-
-    if (order) {
-      const oldTotal = parseFloat(order.priceBreakdown.total || '0');
-      const addFee = parseFloat(fee);
-      order.priceBreakdown.total = (oldTotal + addFee).toFixed(2);
-      order.priceBreakdown.surcharge = (parseFloat(order.priceBreakdown.surcharge || '0') + addFee).toFixed(2);
-      saveOrder(order);
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `Taxa de prioridade de R$ ${fee} adicionada com sucesso ao pedido #${orderId}!`,
-      order,
-    });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Erro ao adicionar taxa' }, { status: 500 });
-  }
+    const { data } = await makeLalamoveRequest('POST', `/v3/orders/${encodeURIComponent(order.orderId)}/priority-fee`, { data: { priorityFee: Number(fee).toFixed(2) } });
+    const updated = mapLiveOrder(data, order); saveOrder(updated);
+    return NextResponse.json({ success: true, message: 'Taxa confirmada pela Lalamove.', order: updated });
+  } catch (err: any) { return NextResponse.json({ error: err.message }, { status: lalamoveErrorStatus(err) }); }
 }

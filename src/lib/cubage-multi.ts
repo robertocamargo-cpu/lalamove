@@ -1,4 +1,4 @@
-﻿import { LalamoveServiceType } from '@/types/lalamove';
+import { LalamoveServiceType } from '@/types/lalamove';
 import { LALAMOVE_VEHICLES } from './cubage';
 
 export interface CargoVolume {
@@ -30,9 +30,9 @@ export function calculateMultiCubage(volumes: CargoVolume[]): MultiCubageResult 
   const cubedWeightKg = Number((totalVolumeM3 * 300).toFixed(2));
   let recommendedService: LalamoveServiceType = 'LALAPRO';
   let reason = '';
-  if (totalWeightKg > 1200 || totalVolumeM3 > 7.5) { recommendedService = 'TRUCK'; reason = `Volume elevado (${totalVolumeM3} m³) ou peso (${totalWeightKg} kg) requer Caminhão Baú.`; }
+  if (totalWeightKg > 1200 || totalVolumeM3 > 7.5) { recommendedService = 'TRUCK330'; reason = `Volume elevado (${totalVolumeM3} m³) ou peso (${totalWeightKg} kg) requer Caminhão Baú.`; }
   else if (totalWeightKg > 500 || totalVolumeM3 > 3.0) { recommendedService = 'VAN'; reason = `Carga volumosa (${totalVolumeM3} m³) excede a capacidade de Fiorino; necessita Van.`; }
-  else if (totalWeightKg > 100 || totalVolumeM3 > 0.50 || totalBoxes > 8) { recommendedService = 'LUV'; reason = `Ideal para Utilitário (Fiorino): ${totalBoxes} caixas ocupam ${totalVolumeM3} m³.`; }
+  else if (totalWeightKg > 100 || totalVolumeM3 > 0.50 || totalBoxes > 8) { recommendedService = 'UV_FIORINO'; reason = `Ideal para Utilitário (Fiorino): ${totalBoxes} caixas ocupam ${totalVolumeM3} m³.`; }
   else if (totalWeightKg > 20 || totalVolumeM3 > 0.048 || totalBoxes > 3) { recommendedService = 'HATCHBACK'; reason = `Acomodável em Carro Hatch (${totalBoxes} caixas, ${totalVolumeM3} m³).`; }
   else { reason = `Carga compacta (${totalBoxes} caixas, ${totalWeightKg} kg) apta para LalaPro.`; }
   const spec = LALAMOVE_VEHICLES[recommendedService];

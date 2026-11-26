@@ -1,164 +1,71 @@
 import { NextResponse } from 'next/server';
-import {
-  makeLalamoveRequest,
-  simulateQuotationAsync,
-} from '@/lib/lalamove-client';
-import { QuotationRequest, QuotationResponse, Coordinates } from '@/types/lalamove';
+import { makeLalamoveRequest, getLalamoveConfig, lalamoveErrorStatus } from '@/lib/lalamove-client';
+import { geocodeAddress, hasValidCoordinates } from '@/lib/geocode';
+import { QuotationRequest, QuotationResponse } from '@/types/lalamove';
 import { saveQuotation } from '@/lib/storage';
 
-// Cache conhecido de coordenadas de São Paulo
-const KNOWN_COORDS: Record<string, Coordinates> = {
-  'glicerio': { lat: '-23.556780', lng: '-46.628890' },
-  'paulista': { lat: '-23.561684', lng: '-46.655981' },
-};
-
-async function resolveCoordinatesForAddress(address: string, existingCoords?: Coordinates): Promise<Coordinates> {
-  // Se já tem coordenadas válidas e não são as padrão repetidas de fallback
-  if (existingCoords?.lat && existingCoords?.lng && existingCoords.lat !== '-23.561684') {
-    return existingCoords;
-  }
-
-  // Tenta geocodificar o endereço de texto usando Nominatim
-  try {
-    const query = `${address} São Paulo Brasil`.trim();
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`,
-      {
-        headers: { 'User-Agent': 'LalamoveExpressApp/1.0' },
-        next: { revalidate: 86400 },
-      }
-    );
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.length > 0) {
-        return {
-          lat: Number(data[0].lat).toFixed(6),
-          lng: Number(data[0].lon).toFixed(6),
-        };
-      }
-    }
-  } catch (e) {
-    console.warn('Geocoding fallback for address:', address);
-  }
-
-  return existingCoords || { lat: '-23.550520', lng: '-46.633308' };
-}
+const TIER_CODES = { REGULAR: '1', PRIORITY: '2', POOLED: '3' } as const;
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const reqData: QuotationRequest = body.data || body;
-
-    if (!reqData.stops || reqData.stops.length < 2) {
-      return NextResponse.json(
-        { error: 'São necessárias pelo menos 2 paradas (Origem e 1 Destino).' },
-        { status: 400 }
-      );
+    const input: QuotationRequest = body.data || body;
+    if (!Array.isArray(input.stops) || input.stops.length < 2 || input.stops.length > 16 ||
+        input.stops.some(s => !s.address?.trim())) {
+      return NextResponse.json({ error: 'Informe de 2 a 16 paradas com endereço completo.' }, { status: 400 });
     }
-
-    // Garante que cada parada tenha coordenadas geocodificadas reais correspondentes ao endereço
-    const resolvedStops = await Promise.all(
-      reqData.stops.map(async (stop, idx) => {
-        // Se for a origem (Glicério 557), usa cache da matriz
-        if (idx === 0 && stop.address.toLowerCase().includes('glic')) {
-          return {
-            ...stop,
-            coordinates: KNOWN_COORDS.glicerio,
-          };
-        }
-
-        const coords = await resolveCoordinatesForAddress(stop.address, stop.coordinates);
-        return {
-          ...stop,
-          coordinates: coords,
-        };
-      })
-    );
-
-    reqData.stops = resolvedStops;
-
-    let quoteResult: QuotationResponse | null = null;
-    let isLiveApi = false;
-
-    // Tenta chamada real à API da Lalamove v3 (Produção ou Sandbox)
-    try {
-      const lalamovePayload = {
-        data: {
-          serviceType: reqData.serviceType,
-          specialRequests: reqData.specialRequests || [],
-          language: reqData.language || 'pt_BR',
-          isRouteOptimized: reqData.isRouteOptimized,
-          stops: reqData.stops.map((s) => ({
-            coordinates: {
-              lat: String(s.coordinates.lat),
-              lng: String(s.coordinates.lng),
-            },
-            address: s.address,
-          })),
-          item: reqData.item || {
-            quantity: '10',
-            weight: 'LESS_THAN_100KG',
-            categories: ['OFFICE_SUPPLIES'],
-            handlingInstructions: ['KEEP_DRY'],
-          },
-        },
-      };
-
-      const realResponse = await makeLalamoveRequest(
-        'POST',
-        '/v3/quotations',
-        lalamovePayload
-      );
-
-      if (realResponse && realResponse.data) {
-        const d = realResponse.data;
-        const total = d.priceBreakdown?.total || '0.00';
-        const numTotal = parseFloat(total);
-        isLiveApi = true;
-
-        quoteResult = {
-          quotationId: d.quotationId,
-          serviceType: d.serviceType,
-          deliveryTier: reqData.deliveryTier || 'REGULAR',
-          scheduleAt: d.scheduleAt,
-          expiresAt: d.expiresAt,
-          priceBreakdown: {
-            currency: d.priceBreakdown?.currency || 'BRL',
-            base: d.priceBreakdown?.base || '0.00',
-            extraMileage: d.priceBreakdown?.extraMileage || '0.00',
-            surcharge: d.priceBreakdown?.surcharge || '0.00',
-            total: total,
-            priorityPrice: (numTotal * 1.4736).toFixed(2),
-            regularPrice: total,
-            pooledPrice: (numTotal * 0.8106).toFixed(2),
-          },
-          distance: {
-            value: d.distance?.value || '0',
-            text: `${(Number(d.distance?.value || 0) / 1000).toFixed(1)} km`,
-          },
-          stops: d.stops || reqData.stops,
-          isRouteOptimized: reqData.isRouteOptimized,
-          isLiveApi: true,
-          createdAt: new Date().toISOString(),
-        };
+    const tier = input.deliveryTier || 'REGULAR';
+    if (!(tier in TIER_CODES)) return NextResponse.json({ error: 'Modalidade inválida.' }, { status: 400 });
+    if (input.scheduleAt && (!Number.isFinite(Date.parse(input.scheduleAt)) || Date.parse(input.scheduleAt) <= Date.now())) {
+      return NextResponse.json({ error: 'O agendamento deve ser uma data futura.' }, { status: 400 });
+    }
+    const stops: QuotationRequest['stops'] = [];
+    // Geocodificação sequencial para não disparar consultas simultâneas ao serviço.
+    for (const stop of input.stops) {
+      try {
+        stops.push({ address: stop.address, coordinates: hasValidCoordinates(stop.coordinates)
+          ? stop.coordinates : await geocodeAddress(stop.address, stop) });
+      } catch (err: any) {
+        const index = input.stops.indexOf(stop);
+        return NextResponse.json({ error: `${index === 0 ? 'Origem' : `Destino ${index}`}: ${err.message}` }, { status: 422 });
       }
-    } catch (apiError: any) {
-      console.warn('Live Lalamove API call notice:', apiError.message);
     }
-
-    // Se não há chave real configurada, usa o simulador calibrado por malha viária OSRM
-    if (!quoteResult) {
-      quoteResult = await simulateQuotationAsync(reqData);
-      quoteResult.isLiveApi = false;
+    const result = await makeLalamoveRequest('POST', '/v3/quotations', { data: {
+      serviceType: input.serviceType,
+      pricingTierCode: TIER_CODES[tier],
+      specialRequests: input.specialRequests || [],
+      language: input.language || 'pt_BR',
+      isRouteOptimized: input.isRouteOptimized,
+      stops,
+      ...(input.scheduleAt ? { scheduleAt: new Date(input.scheduleAt).toISOString() } : {}),
+      // item é restrito a mercados asiáticos na API v3; não enviar enums locais no Brasil.
+    } });
+    const d = result.data;
+    if (!d.quotationId || !d.expiresAt || !d.priceBreakdown?.total || !Array.isArray(d.stops) ||
+        d.stops.length !== stops.length || d.stops.some((s: any) => !s.stopId)) {
+      throw new Error('A Lalamove retornou uma cotação incompleta. Solicite outra cotação.');
     }
-
-    saveQuotation(quoteResult);
-
-    return NextResponse.json(quoteResult);
+    const used = new Set<number>();
+    const mappedStops = d.stops.map((stop: any, index: number) => {
+      const originalIndex = stops.findIndex((s, i) => !used.has(i) &&
+        Number(s.coordinates.lat).toFixed(6) === Number(stop.coordinates?.lat).toFixed(6) &&
+        Number(s.coordinates.lng).toFixed(6) === Number(stop.coordinates?.lng).toFixed(6));
+      if (originalIndex < 0) throw new Error('Não foi possível associar as paradas da cotação aos destinatários.');
+      used.add(originalIndex);
+      return { ...stop, originalIndex, optimizedIndex: index };
+    });
+    const quote: QuotationResponse = {
+      quotationId: String(d.quotationId), serviceType: d.serviceType || input.serviceType,
+      deliveryTier: tier, scheduleAt: input.scheduleAt ? d.scheduleAt || input.scheduleAt : undefined,
+      expiresAt: d.expiresAt, priceBreakdown: d.priceBreakdown,
+      distance: { value: String(d.distance?.value || '0'), text: d.distance
+        ? `${(Number(d.distance.value) / 1000).toFixed(1)} km` : 'Não informada' },
+      stops: mappedStops, isRouteOptimized: input.isRouteOptimized,
+      isLiveApi: true, apiEnv: getLalamoveConfig().env, createdAt: new Date().toISOString(),
+    };
+    saveQuotation(quote);
+    return NextResponse.json(quote);
   } catch (err: any) {
-    return NextResponse.json(
-      { error: err.message || 'Erro ao processar cotação Lalamove' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: err.message || 'Erro ao consultar cotação Lalamove.' }, { status: lalamoveErrorStatus(err) });
   }
 }

@@ -417,7 +417,7 @@ export function HistoryView({ orders, onRefreshOrders }: HistoryViewProps) {
       <OrderDetailsModal
         isOpen={!!selectedOrder}
         onClose={() => setSelectedOrder(null)}
-        order={selectedOrder}
+        order={orders.find(o => o.orderId === selectedOrder?.orderId) || selectedOrder}
         onRefreshOrders={onRefreshOrders}
       />
     </div>

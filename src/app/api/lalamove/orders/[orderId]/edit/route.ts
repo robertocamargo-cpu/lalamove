@@ -1,40 +1,17 @@
 import { NextResponse } from 'next/server';
-import { makeLalamoveRequest } from '@/lib/lalamove-client';
-import { getOrderById, saveOrder } from '@/lib/storage';
-
-export async function PATCH(
-  request: Request,
-  { params }: { params: { orderId: string } }
-) {
-  const { orderId } = params;
-  const order = getOrderById(orderId);
-
+import { makeLalamoveRequest, lalamoveErrorStatus } from '@/lib/lalamove-client';
+import { assertLiveOrder, mapLiveOrder } from '@/lib/lalamove-orders';
+import { saveOrder } from '@/lib/storage';
+import { hasValidCoordinates } from '@/lib/geocode';
+export async function PATCH(request: Request, { params }: { params: { orderId: string } }) {
   try {
-    const body = await request.json();
-    const { remarks, stops } = body;
-
-    try {
-      await makeLalamoveRequest('PATCH', `/v3/orders/${orderId}`, {
-        data: {
-          remarks,
-          stops,
-        },
-      });
-    } catch (apiErr: any) {
-      console.warn('Edit order live API notice:', apiErr.message);
+    const order = assertLiveOrder(params.orderId);
+    const { stops } = await request.json();
+    if (!Array.isArray(stops) || stops.length < 2 || stops.some(s => !s.address || !s.name || !s.phone || !hasValidCoordinates(s.coordinates))) {
+      return NextResponse.json({ error: 'Envie todas as paradas com endereço, coordenadas e contatos, preservando a coleta original.' }, { status: 400 });
     }
-
-    if (order) {
-      if (remarks) order.remarks = remarks;
-      saveOrder(order);
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `Pedido #${orderId} atualizado com sucesso!`,
-      order,
-    });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Erro ao editar pedido' }, { status: 500 });
-  }
+    const { data } = await makeLalamoveRequest('PATCH', `/v3/orders/${encodeURIComponent(order.orderId)}`, { data: { stops } });
+    const updated = mapLiveOrder(data, order); saveOrder(updated);
+    return NextResponse.json({ success: true, message: 'Pedido atualizado na Lalamove.', order: updated });
+  } catch (err: any) { return NextResponse.json({ error: err.message }, { status: lalamoveErrorStatus(err) }); }
 }

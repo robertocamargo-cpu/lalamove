@@ -53,11 +53,11 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     "serviceType": "LALAPRO",
     "language": "pt_BR",
     "isRouteOptimized": true,
+    "pricingTierCode": "1",
     "stops": [
       { "coordinates": { "lat": "-23.556780", "lng": "-46.628890" }, "address": "Rua do Glicério, 557 - SP" },
       { "coordinates": { "lat": "-23.561684", "lng": "-46.655981" }, "address": "Av. Paulista, 1000 - SP" }
-    ],
-    "item": { "quantity": "10", "weight": "MORE_THAN_10KG", "categories": ["OFFICE_SUPPLIES"], "handlingInstructions": ["KEEP_DRY"] }
+    ]
   }
 }`,
     responseExample: `{
@@ -104,15 +104,15 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     description:
       'Emite a ordem de corrida utilizando o quotationId ativo. Notifica imediatamente a malha de motoristas parceiros da Lalamove mais próximos da expedição.',
     businessUseCase:
-      'Aciona a coleta dos guardanapos de papel na Rua do Glicério 557 e gera os links de rastreio individuais por cliente.',
+      'Aciona a coleta dos guardanapos de papel na Rua do Glicério 557 e permite compartilhar o link de rastreio retornado pela Lalamove.',
     requestExample: `{
   "data": {
     "quotationId": "3635925342855848091",
-    "sender": { "name": "Expedição Matriz", "phone": "+551133334444" },
+    "sender": { "stopId": "ID_DA_ORIGEM_NA_COTACAO", "name": "Nevine Liberdade (Vinicius)", "phone": "+5511947084941" },
     "recipients": [
-      { "name": "Restaurante Central", "phone": "+5511999998888", "remarks": "Entregar na portaria" }
+      { "stopId": "ID_DO_DESTINO_NA_COTACAO", "name": "Restaurante Central", "phone": "+5511999998888", "remarks": "Entregar na portaria" }
     ],
-    "isPODRequired": true,
+    "isPODEnabled": true,
     "metadata": { "department": "Expedicao-Guardanapos", "internalInvoice": "NF-10492" }
   }
 }`,
@@ -121,7 +121,7 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     "orderId": "3635925342855848095",
     "quotationId": "3635925342855848091",
     "status": "ASSIGNING_DRIVER",
-    "shareLink": "https://lalamove.com/share/track?id=3635925342855848095"
+    "shareLink": "VALOR_SHARELINK_RETORNADO_PELA_LALAMOVE"
   }
 }`,
   },
@@ -142,13 +142,10 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     "orderId": "3635925342855848095",
     "status": "COMPLETED",
     "priceBreakdown": { "total": "20.08", "currency": "BRL" },
-    "driverId": "drv_sp_101",
-    "driverName": "Carlos Eduardo Mendes",
-    "driverPhone": "+5511987654321",
-    "driverPlate": "BRA2E19",
+    "driverId": "ID_RETORNADO_PELA_API",
     "stops": [
       { "address": "Rua do Glicério, 557", "status": "DELIVERED" },
-      { "address": "Av. Paulista, 1000", "status": "DELIVERED", "pod": { "name": "Carlos", "image": "https://..." } }
+      { "address": "Av. Paulista, 1000", "status": "DELIVERED", "POD": { "status": "DELIVERED", "image": "URL_DA_API", "deliveredAt": "2026-11-24T14:58:12Z" } }
     ]
   }
 }`,
@@ -167,9 +164,9 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
       'Caso o cliente ligue avisando que mudou o recebedor ou que a doca mudou de portão, a expedição atualiza o chamado sem precisar cancelar a corrida.',
     requestExample: `{
   "data": {
-    "remarks": "Atenção: Entregar na doca dos fundos com o encarregado João.",
     "stops": [
-      { "stopId": "...", "remarks": "Tocar interfone 32" }
+      { "coordinates": { "lat": "LAT_ORIGINAL", "lng": "LNG_ORIGINAL" }, "address": "COLETA_ORIGINAL", "name": "REMETENTE", "phone": "+5511947084941" },
+      { "coordinates": { "lat": "LAT_DESTINO", "lng": "LNG_DESTINO" }, "address": "DESTINO", "name": "DESTINATARIO", "phone": "+5511999998888", "remarks": "Tocar interfone 32" }
     ]
   }
 }`,
@@ -211,7 +208,7 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     description:
       'Adiciona um incentivo financeiro adicional (gorjeta/taxa de prioridade) a uma corrida já emitida para acelerar a aceitação por motoristas parceiros.',
     businessUseCase:
-      'Em dias de muita chuva em São Paulo ou horários de pico onde motoboys demoram para aceitar, adiciona R$ 5 ou R$ 10 para o pedido ser aceito em segundos.',
+      'Em dias de muita chuva em São Paulo ou horários de pico onde motoboys demoram para aceitar, adiciona R$ 5 ou R$ 10 para incentivar a aceitação, conforme disponibilidade.',
     requestExample: `{
   "data": {
     "priorityFee": "10.00"
@@ -236,21 +233,21 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     description:
       'Retorna as coordenadas GPS ao vivo (latitude/longitude), telefone, foto e dados do veículo do motorista vinculado à corrida.',
     businessUseCase:
-      'Exibir o carrinho/moto andando no mapa em tempo real dentro do sistema para a expedição monitorar a aproximação.',
+      'Consultar os dados do motorista quando disponibilizados pela Lalamove. A API pode retornar 403 fora da janela permitida.',
     responseExample: `{
   "data": {
-    "driverId": "drv_sp_101",
-    "name": "Carlos Eduardo Mendes",
+    "driverId": "ID_RETORNADO_PELA_API",
+    "name": "NOME_RETORNADO_PELA_API",
     "phone": "+5511987654321",
-    "plate": "BRA2E19",
+    "plateNumber": "PLACA_RETORNADA_PELA_API",
     "coordinates": { "lat": "-23.555500", "lng": "-46.630000" }
   }
 }`,
   },
   {
-    id: 'post-change-driver',
-    method: 'POST',
-    path: '/v3/orders/{orderId}/drivers/{driverId}/change',
+    id: 'request-change-driver',
+    method: 'DELETE',
+    path: '/v3/orders/{orderId}/drivers/{driverId}',
     category: 'Motoristas',
     name: 'Solicitar Troca de Motorista por Atraso',
     inUse: true,
@@ -261,7 +258,7 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
       'Garantir que a entrega não fique travada se o motorista furar o pneu ou atrasar no trânsito.',
     requestExample: `{
   "data": {
-    "reason": "DRIVER_DELAYED"
+    "reason": "DRIVER_LATE"
   }
 }`,
     responseExample: `{
@@ -327,7 +324,7 @@ const API_ENDPOINTS: ApiEndpointDoc[] = [
     inUse: false,
     statusBadge: 'DISPONÍVEL NA API (POTENCIAL EXPANSÃO)',
     description:
-      'A Lalamove envia notificações HTTP instantâneas sempre que ocorre uma alteração: motorista aceitou, chegou na coleta, mercadoria coletada, entregue com foto POD.',
+      'A Lalamove pode enviar notificações HTTP sempre que ocorre uma alteração: motorista aceitou, chegou na coleta, mercadoria coletada, entregue com foto POD.',
     businessUseCase:
       'Enviar WhatsApp automático para o cliente no segundo em que a mercadoria for entregue, com a foto do comprovante, sem precisar de ninguém da expedição clicando em botões.',
     responseExample: `{
@@ -422,7 +419,7 @@ export default function ApiDocumentationPage() {
           <div className="flex items-center space-x-3">
             <div className="hidden sm:flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Chave de Produção Oficial Ativa</span>
+              <span>Referência da API Lalamove v3</span>
             </div>
           </div>
         </div>

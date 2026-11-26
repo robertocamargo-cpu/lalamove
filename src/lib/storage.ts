@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Order, QuotationResponse } from '@/types/lalamove';
 
-const DATA_DIR = path.join(process.cwd(), 'data');
+const DATA_DIR = process.env.LALAMOVE_DATA_DIR || path.join(process.cwd(), 'data');
 const ORDERS_FILE = path.join(DATA_DIR, 'orders.json');
 const QUOTES_FILE = path.join(DATA_DIR, 'quotes.json');
 
@@ -19,18 +19,17 @@ function loadOrdersFromDisk(): Order[] {
       const content = fs.readFileSync(ORDERS_FILE, 'utf-8');
       return JSON.parse(content) || [];
     }
-  } catch (e) {
-    console.error('Erro ao ler orders.json do disco:', e);
-  }
+  } catch (e) { throw new Error('Não foi possível ler os pedidos salvos.'); }
   return [];
 }
 
 function saveOrdersToDisk(orders: Order[]) {
   try {
     ensureDataDir();
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2), 'utf-8');
+    fs.writeFileSync(ORDERS_FILE + '.tmp', JSON.stringify(orders, null, 2), { encoding: 'utf-8', mode: 0o600 });
+    fs.renameSync(ORDERS_FILE + '.tmp', ORDERS_FILE);
   } catch (e) {
-    console.error('Erro ao salvar orders.json no disco:', e);
+    throw new Error('Não foi possível salvar o pedido. Confira a Lalamove antes de repetir a contratação.');
   }
 }
 
@@ -41,18 +40,17 @@ function loadQuotesFromDisk(): QuotationResponse[] {
       const content = fs.readFileSync(QUOTES_FILE, 'utf-8');
       return JSON.parse(content) || [];
     }
-  } catch (e) {
-    console.error('Erro ao ler quotes.json do disco:', e);
-  }
+  } catch (e) { throw new Error('Não foi possível ler as cotações salvas.'); }
   return [];
 }
 
 function saveQuotesToDisk(quotes: QuotationResponse[]) {
   try {
     ensureDataDir();
-    fs.writeFileSync(QUOTES_FILE, JSON.stringify(quotes, null, 2), 'utf-8');
+    fs.writeFileSync(QUOTES_FILE + '.tmp', JSON.stringify(quotes, null, 2), { encoding: 'utf-8', mode: 0o600 });
+    fs.renameSync(QUOTES_FILE + '.tmp', QUOTES_FILE);
   } catch (e) {
-    console.error('Erro ao salvar quotes.json no disco:', e);
+    throw new Error('Não foi possível salvar a cotação.');
   }
 }
 
@@ -88,6 +86,8 @@ export function saveMultipleOrders(newOrders: Order[]) {
   for (const o of newOrders) {
     const idx = orders.findIndex((x) => x.orderId === o.orderId);
     if (idx >= 0) {
+      // O CSV não deve substituir dados já confirmados pela API.
+      if (o.source === 'csv' && orders[idx].isLiveApi) continue;
       orders[idx] = o;
     } else {
       orders.unshift(o);
@@ -103,4 +103,22 @@ export function getOrderById(orderId: string): Order | undefined {
 
 export function getAllOrders(): Order[] {
   return loadOrdersFromDisk();
+}
+
+// Uma resposta perdida não autoriza reenviar automaticamente um pedido pago.
+export function beginOrderSubmission(quotationId: string): boolean {
+  const dir = path.join(DATA_DIR, 'submissions');
+  fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
+  try {
+    fs.writeFileSync(path.join(dir, encodeURIComponent(quotationId) + '.json'),
+      JSON.stringify({ quotationId, submittedAt: new Date().toISOString() }), { flag: 'wx', mode: 0o600 });
+    return true;
+  } catch (err: any) {
+    if (err.code === 'EEXIST') return false;
+    throw err;
+  }
+}
+
+export function clearOrderSubmission(quotationId: string) {
+  fs.rmSync(path.join(DATA_DIR, 'submissions', encodeURIComponent(quotationId) + '.json'), { force: true });
 }

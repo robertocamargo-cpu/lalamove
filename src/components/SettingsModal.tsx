@@ -12,8 +12,9 @@ interface SettingsModalProps {
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [apiKey, setApiKey] = useState('');
   const [apiSecret, setApiSecret] = useState('');
-  const [env, setEnv] = useState<'sandbox' | 'production'>('sandbox');
-  const [mockFallback, setMockFallback] = useState(true);
+  const [env, setEnv] = useState<'sandbox' | 'production'>('production');
+  const [maskedKey, setMaskedKey] = useState('');
+  const [hasSecret, setHasSecret] = useState(false);
   const [loading, setLoading] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,9 +26,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       .then((res) => res.json())
       .then((data) => {
         if (data) {
-          setApiKey(data.apiKey || '');
-          setEnv(data.env || 'sandbox');
-          setMockFallback(data.mockFallback !== false);
+          setApiKey('');
+          setApiSecret('');
+          setMaskedKey(data.maskedKey || '');
+          setHasSecret(!!data.hasSecret);
+          setEnv(data.env || 'production');
         }
       })
       .catch((e) => console.error(e));
@@ -48,12 +51,13 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           apiSecret,
           env,
           market: 'BR',
-          mockFallback,
+          mockFallback: false,
         }),
       });
 
       if (!res.ok) {
-        throw new Error('Falha ao salvar configurações');
+        const data = await res.json();
+        throw new Error(data.error || 'Falha ao salvar configurações');
       }
 
       setSavedSuccess(true);
@@ -89,7 +93,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {savedSuccess && (
             <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Configurações salvas e aplicadas com sucesso no arquivo .env.local!</span>
+              <span>Configurações salvas e aplicadas com sucesso no ambiente selecionado!</span>
             </div>
           )}
 
@@ -136,7 +140,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </label>
             <input
               type="text"
-              placeholder="Ex: pk_prod_xxxxxxxxxxxxxx"
+              placeholder={maskedKey ? `Cadastrada: ${maskedKey} — deixe vazio para manter` : "pk_prod_…"}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="w-full bg-[#0F1117] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono placeholder-gray-600 focus:outline-none focus:border-[#F26522]"
@@ -149,7 +153,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </label>
             <input
               type="password"
-              placeholder="Ex: sk_prod_xxxxxxxxxxxxxx"
+              placeholder={hasSecret ? "Secret cadastrado — deixe vazio para manter" : "sk_prod_…"}
               value={apiSecret}
               onChange={(e) => setApiSecret(e.target.value)}
               className="w-full bg-[#0F1117] border border-gray-700 rounded-lg px-3 py-2 text-white font-mono placeholder-gray-600 focus:outline-none focus:border-[#F26522]"

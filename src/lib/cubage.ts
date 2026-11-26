@@ -74,8 +74,8 @@ export const LALAMOVE_VEHICLES: Record<LalamoveServiceType, VehicleSpec> = {
     pricePerKmBrl: 3.10,
     stopFeeBrl: 14.00,
   },
-  LUV: {
-    type: 'LUV',
+  UV_FIORINO: {
+    type: 'UV_FIORINO',
     label: 'Utilitário e Pick-Up (Fiorino)',
     categoryName: 'Utilitário e Pick-Up',
     description: 'Fiorino / Strada baú. Ideal para caixas volumosas de guardanapos de papel.',
@@ -98,8 +98,8 @@ export const LALAMOVE_VEHICLES: Record<LalamoveServiceType, VehicleSpec> = {
     pricePerKmBrl: 5.60,
     stopFeeBrl: 25.00,
   },
-  TRUCK: {
-    type: 'TRUCK',
+  TRUCK330: {
+    type: 'TRUCK330',
     label: 'Caminhão Baú (3/4 ou Toco)',
     categoryName: 'Caminhão',
     description: 'Para cargas paletizadas ou grande volume industrial',
@@ -135,13 +135,13 @@ export function calculateCubage(
   let reason = '';
 
   if (totalWeightKg > 1200 || totalVolumeM3 > 7.5) {
-    recommendedService = 'TRUCK';
+    recommendedService = 'TRUCK330';
     reason = `Volume elevado (${totalVolumeM3} m³) ou peso (${totalWeightKg} kg) requer Caminhão Baú.`;
   } else if (totalWeightKg > 500 || totalVolumeM3 > 3.0) {
     recommendedService = 'VAN';
     reason = `Carga volumosa (${totalVolumeM3} m³) excede capacidade de Fiorino; necessita Van.`;
   } else if (totalWeightKg > 100 || totalVolumeM3 > 0.50 || safeQty > 8) {
-    recommendedService = 'LUV';
+    recommendedService = 'UV_FIORINO';
     reason = `Ideal para Utilitário (Fiorino): ${safeQty} caixas ocupam ${totalVolumeM3} m³ (baú fechado e protegido).`;
   } else if (totalWeightKg > 20 || totalVolumeM3 > 0.048 || safeQty > 3) {
     recommendedService = 'HATCHBACK';
